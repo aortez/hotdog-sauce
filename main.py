@@ -34,55 +34,31 @@ def f(x):
     return torch.pow((x - 2.0), 2)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    # torch_scalar = torch.tensor(3.14)
-    # print(torch_scalar)
-    #
-    # x_np = np.random.random((4,4))
-    # print("np: ", x_np)
-    #
-    # x_pt = torch.tensor(x_np)
-    # print("pt: ", x_pt)
-    #
-    # print(x_np.dtype, x_pt.dtype)
-    #
-    # x_np = np.asarray(x_np, dtype=np.float32)
-    # print("np:", x_np)
-    #
-    # x_pt = torch.tensor(x_np)
-    # print("pt: ", x_pt)
-    #
-    # b_pt = (x_pt > 0.5)
-    # print("b_pt: ", b_pt)
-    #
-    # print("np.sum(b_pt)", torch.sum(b_pt))
-    #
-    # x = torch.rand(2**11, 2**11)
-    # time_cpu = timeit.timeit("x@x", globals=globals(), number=100)
-    # print(time_cpu)
-    # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    #
-    # print("device: ", device)
-    #
-    # x = x.to(device)
-    #
-    # time_gpu = timeit.timeit("x@x", globals=globals(), number=100)
-    # print("time_gpu: ", time_gpu)
-    #
-    # print("speedup: ", time_cpu/time_gpu)
-    #
-    # some_tensors = [torch.tensor(1), torch.tensor(2)]
-    # print("some_tensors: ", some_tensors)
-    # print(moveTo(some_tensors, device))
+def f_del(x):
+    return 2*x-4
 
+
+if __name__ == '__main__':
     x_axis_vals = np.linspace(-7, 9, 100)
     y_axis_vals = f(torch.tensor(x_axis_vals)).numpy()
 
     print("x_axis_vals: ", x_axis_vals)
     print("y_axis_vals: ", y_axis_vals)
-    #
-    sns.lineplot(x=x_axis_vals, y=y_axis_vals, label = "f(x) = (x - 2)^2")
+
+    # Plot pretend loss function.
+    sns.lineplot(x=x_axis_vals, y=y_axis_vals, label="f(x) = (x - 2)^2")
+
+    # Draw line at known minimum.
+    sns.lineplot(x=x_axis_vals, y=[0.0] * len(x_axis_vals), label="minimum", color='black')
+
+    # Compute values of gradient of f(x).
+    y_axis_vals_del = f_del(torch.tensor(x_axis_vals)).numpy()
+
+    # Draw gradient of f(x).
+    sns.lineplot(x=x_axis_vals, y=y_axis_vals_del, label="gradient of $f'(x) = 2x - 4$", color='red')
+
+    # Pretend that we do not know the minimum, and we just look at a bunch of points along the derivative of the loss
+    # function (f(x))). We can see that f(x) < 2 is negative and f(x) > 2 is positive. This tells us how to adjust
+    # our guess at the minimum (which we already know is at x = 2).
+
     plt.show()
-
-
