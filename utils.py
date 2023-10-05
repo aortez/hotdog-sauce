@@ -11,7 +11,7 @@ def f_del(x):
     return 2*x-4
 
 
-def moveTo(obj, device):
+def move_to(obj, device):
     """
     obj: the python object to move to the device, or to move its contents to the device
     device: the compute device to move the object to
